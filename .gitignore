@@ -19,3 +19,9 @@
 *.exe
 *.out
 *.app
+
+inverse-k
+inverse-k.exe
+
+**.swp
+**.DS_Store

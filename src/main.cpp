@@ -17,7 +17,7 @@ void display() {
 
     // set camera parameters
 	GLdouble centerX=eyeX;
-	GLdouble centerY=0;
+	GLdouble centerY=eyeY+1;
 	GLdouble centerZ=eyeZ;
 	GLdouble upX=0.;
 	GLdouble upY=0.;
@@ -81,7 +81,7 @@ void handleSpecialKeypress(int key, int x, int y) {
             // handle left key
             if (mod == GLUT_ACTIVE_SHIFT) {
                 // translate it
-                eyeX -= 0.05;
+                eyeX -= 0.1;
             } else {
                 // rotate it around the normal
                 //mainBez.transform(ROTATION, mainBez.get_normal(), 8);
@@ -93,7 +93,7 @@ void handleSpecialKeypress(int key, int x, int y) {
             // handle right key
             if (mod == GLUT_ACTIVE_SHIFT) {
                 // translate it
-                eyeX += 0.05;
+                eyeX += 0.1;
             } else {
                 // rotate it around the normal
             }
@@ -104,10 +104,10 @@ void handleSpecialKeypress(int key, int x, int y) {
             // handle up key
             if (mod == GLUT_ACTIVE_SHIFT) {
                 // translate it
-                eyeZ += 0.05;
+                eyeZ += 0.1;
             } else {
                 // rotate it around the right vector
-                eyeY += 0.05;
+                eyeY += 0.1;
             }
             break;
 
@@ -116,10 +116,10 @@ void handleSpecialKeypress(int key, int x, int y) {
             // handle down key
             if (mod == GLUT_ACTIVE_SHIFT) {
                 // translate it
-                eyeZ -= 0.05;
+                eyeZ -= 0.1;
             } else {
                 // rotate it around the right vector
-                eyeY -= 0.05;
+                eyeY -= 0.1;
             }
             break;
     }
@@ -141,7 +141,9 @@ int main(int argc, char* argv[]) {
     vector<Segment*> segs;
     Segment *new_seg = new Segment(4, BALLJOINT);
     segs.push_back(new_seg);
-    new_seg = new Segment(4, BALLJOINT);
+    new_seg = new Segment(1, BALLJOINT);
+    segs.push_back(new_seg);
+    new_seg = new Segment(3, BALLJOINT);
     segs.push_back(new_seg);
 
     mainArm.set_segments(segs);
@@ -170,10 +172,10 @@ int main(int argc, char* argv[]) {
 	glEnable(GL_DEPTH_TEST);
 
 	// random light behind your eyes
-	GLfloat diffuse0[]={1.0, 1.0, 1.0, 1.0};
+	GLfloat diffuse0[]={1.5, 1.5, 1.5, 1.0};
 	GLfloat ambient0[]={1.0, 1.0, 1.0, 1.0};
 	GLfloat specular0[]={1.0, 1.0, 1.0, 1.0};
-	GLfloat light0_pos[]={0.0, 0.0, 5.0, 1.0};
+	GLfloat light0_pos[]={-5.0, 0.0, 3.0, 1.0};
 
 	glEnable(GL_LIGHT0);
 	glLightfv(GL_LIGHT0, GL_POSITION, light0_pos);

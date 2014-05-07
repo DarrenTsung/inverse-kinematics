@@ -4,7 +4,6 @@ void printVector(Vector3f v) {
     cout << "[" << v[0] << ", " << v[1] << ", " << v[2] << "]" << endl;
 };
 
-/*
 String vectorString(Vector3f v) {
     String ret = "[";
     ret += to_string(v[0]);
@@ -18,4 +17,3 @@ String vectorString(Vector3f v) {
     ret += "]";
     return ret;
 }
-*/

@@ -1,6 +1,8 @@
 #include "include.h"
 #include "arm.h"
 
+#define PI 3.14159265359
+
 using namespace std;
 
 Arm mainArm;
@@ -13,7 +15,13 @@ GLdouble eyeZ=4.0;
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);				// clear the color buffer
 
-    angle += 360./10.;
+    angle += 360./30.;
+
+    Point3f goal(cos(angle*PI/180.0f), sin(angle*PI/180.0f), 1);
+    goal.normalize();
+    goal *= 6;
+    //goal += Vector3f(-1,0,0);
+    mainArm.solve(goal, 100);
 
     // set camera parameters
 	GLdouble centerX=eyeX;
@@ -36,6 +44,18 @@ void display() {
 
     // drawing is done here
     mainArm.draw();
+
+    float c = 0.2;
+    Point3f a0 = goal + Vector3f(-c, 0, c);
+    Point3f a1 = goal + Vector3f(0, 0, -c);
+    Point3f a2 = goal + Vector3f(c, 0, c);
+    Vector3f n2(0, -1, 0);
+    glBegin(GL_TRIANGLES);
+        glNormal3f(n2[0], n2[1], n2[2]);
+        glVertex3f(a0[0], a0[1], a0[2]);
+        glVertex3f(a1[0], a1[1], a1[2]);
+        glVertex3f(a2[0], a2[1], a2[2]);
+    glEnd();
     // end drawing
 
     glFlush();
@@ -139,11 +159,11 @@ void handleSpecialKeyReleased(int key, int x, int y) {
 
 int main(int argc, char* argv[]) {
     vector<Segment*> segs;
-    Segment *new_seg = new Segment(4, BALLJOINT);
-    segs.push_back(new_seg);
-    new_seg = new Segment(1, BALLJOINT);
+    Segment *new_seg = new Segment(2, BALLJOINT);
     segs.push_back(new_seg);
     new_seg = new Segment(3, BALLJOINT);
+    segs.push_back(new_seg);
+    new_seg = new Segment(1, BALLJOINT);
     segs.push_back(new_seg);
 
     mainArm.set_segments(segs);

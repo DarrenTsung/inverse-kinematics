@@ -9,6 +9,11 @@ class Arm {
         vector<Segment*> segments;
         Point3f base;
 
+        Matrix<float,1,3> compute_jacovian_segment(int seg_num, Point3f goal_point);
+
+        // computes end_effector up to certain number of segments
+        Point3f calculate_end_effector(int segment_num = -1);
+
     public:
         // constructors
         Arm();
@@ -21,6 +26,9 @@ class Arm {
 
         // set the segments
         void set_segments(vector<Segment*> segs);
+
+        // solve the arm for some point
+        void solve(Point3f goal_point, int life_count);
 
         // draw the arm
         void draw();

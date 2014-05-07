@@ -3,13 +3,24 @@
 #define PI 3.14159265359
 
 Segment::Segment() {
-    T.setIdentity();
+    T = T.Identity();
 }
 
 Segment::Segment(float magnitude, JointType jt) {
-    T.setIdentity();
+    T = T.Identity();
     mag = magnitude;
     joint = jt;
+}
+
+Point3f Segment::get_end_point() {
+    Point3f a;
+
+    // start with vector going into the Z direction
+    a = Point3f(0, 0, mag);
+    // transform into the rotation of the segment
+    a = T * a;
+
+    return a;
 }
 
 Point3f Segment::draw(Point3f start_point) {
@@ -76,4 +87,34 @@ Point3f Segment::draw(Point3f start_point) {
     }
 
     return a2;
+}
+
+void Segment::save_angle(Vector3f ang) {
+    saved_angle = ang;
+}
+
+Vector3f Segment::get_saved_angle() {
+    return saved_angle;
+}
+
+void Segment::apply_saved_angle_change(float rad_change) {
+    saved_T = T;
+    T = AngleAxisf(rad_change, saved_angle) * T;
+}
+
+void Segment::unapply_saved_angle_change(float rad_change) {
+    T = saved_T;
+}
+
+void Segment::transform(AngleAxisf t) {
+    T = t * T;
+}
+
+void Segment::reset() {
+    T = T.Identity();
+}
+
+void Segment::randomize() {
+    // randomize
+    T = AngleAxisf(PI/2, Vector3f::Random()) * T;
 }

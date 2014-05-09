@@ -42,11 +42,12 @@ Point3f Segment::draw(Point3f start_point) {
     // translate the end point to the start point
     a2 += start_point;
 
+    float scale = 0.5f;
     for (int i=0; i<seg_count; i++) {
         // a0 and a1 are points on the unit circle divided by seg_count
         // a0 is i+1 so the points go in counter-clockwise order
-        a0 = Point3f(cos(i*(2*PI/seg_count)), sin(i*(2*PI/seg_count)), 0);
-        a1 = Point3f(cos((i+1)*(2*PI/seg_count)), sin((i+1)*(2*PI/seg_count)), 0);
+        a0 = Point3f(scale*cos(i*(2*PI/seg_count)), scale*sin(i*(2*PI/seg_count)), 0);
+        a1 = Point3f(scale*cos((i+1)*(2*PI/seg_count)), scale*sin((i+1)*(2*PI/seg_count)), 0);
 
         // scale appropriately
 
@@ -89,21 +90,44 @@ Point3f Segment::draw(Point3f start_point) {
     return a2;
 }
 
-void Segment::save_angle(Vector3f ang) {
-    saved_angle = ang;
+Vector3f Segment::get_right() {
+    return T*Vector3f(1,0,0);
 }
 
-Vector3f Segment::get_saved_angle() {
-    return saved_angle;
+Vector3f Segment::get_up() {
+    return T*Vector3f(0,1,0);
 }
 
-void Segment::apply_saved_angle_change(float rad_change) {
+Vector3f Segment::get_z() {
+    return T*Vector3f(0,0,1);
+}
+
+AngleAxisf Segment::get_T() {
+    return T;
+}
+
+float Segment::get_mag() {
+    return mag;
+}
+
+void Segment::save_last_transformation() {
+    last_T = T;
+}
+
+void Segment::load_last_transformation() {
+    T = last_T;
+}
+
+void Segment::save_transformation() {
     saved_T = T;
-    T = AngleAxisf(rad_change, saved_angle) * T;
 }
 
-void Segment::unapply_saved_angle_change(float rad_change) {
+void Segment::load_transformation() {
     T = saved_T;
+}
+
+void Segment::apply_angle_change(float rad_change, Vector3f angle) {
+    T = AngleAxisf(rad_change, angle) * T;
 }
 
 void Segment::transform(AngleAxisf t) {

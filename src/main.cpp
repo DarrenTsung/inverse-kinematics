@@ -8,19 +8,24 @@ using namespace std;
 Arm mainArm;
 
 float angle = 0.0;
+float zangle = 0.0;
 GLdouble eyeX=0.0;
-GLdouble eyeY=-10;
-GLdouble eyeZ=4.0;
+GLdouble eyeY=-15;
+GLdouble eyeZ=0.0;
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);				// clear the color buffer
 
-    angle += 360./30.;
+    angle += 360.0/120.0;
+    zangle += 360.0f/60.0f;
 
-    Point3f goal(cos(angle*PI/180.0f), sin(angle*PI/180.0f), 1);
+    Point3f goal(cos(angle*PI/180.0f), sin(angle*PI/180.0f), (sin(zangle*PI/180.0f)));
+    //Point3f goal(cos(angle*PI/180.0f), sin(angle*PI/180.0f), 0);
     goal.normalize();
     goal *= 6;
-    //goal += Vector3f(-1,0,0);
+
+    goal += Vector3f(-2,0,-1);
+    //goal = Vector3f(0, 0, 7);
     mainArm.solve(goal, 100);
 
     // set camera parameters
@@ -163,8 +168,12 @@ int main(int argc, char* argv[]) {
     segs.push_back(new_seg);
     new_seg = new Segment(3, BALLJOINT);
     segs.push_back(new_seg);
+    /*
     new_seg = new Segment(1, BALLJOINT);
     segs.push_back(new_seg);
+    new_seg = new Segment(1, BALLJOINT);
+    segs.push_back(new_seg);
+    */
 
     mainArm.set_segments(segs);
 

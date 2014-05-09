@@ -12,7 +12,7 @@ class Segment {
         // magnitude of the segment
         float mag;
         // transformation matrix (rotation) of the segment
-        AngleAxisf T, saved_T;
+        AngleAxisf T, saved_T, last_T;
 
         // save the angle when computing the changes
         Vector3f saved_angle;
@@ -32,11 +32,20 @@ class Segment {
         // draw takes in the startpoint and returns the endpoint
         Point3f draw(Point3f start_point);
 
-        void save_angle(Vector3f ang);
-        Vector3f get_saved_angle();
+        Vector3f get_right();
+        Vector3f get_up();
+        Vector3f get_z();
 
-        void apply_saved_angle_change(float rad_change);
-        void unapply_saved_angle_change(float rad_change);
+        AngleAxisf get_T();
+        float get_mag();
+
+        void save_transformation();
+        void load_transformation();
+
+        void save_last_transformation();
+        void load_last_transformation();
+
+        void apply_angle_change(float rad_change, Vector3f angle);
 
         // clear transformations
         void reset();

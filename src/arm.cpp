@@ -17,7 +17,7 @@ void Arm::set_base(Point3f pos) {
 // returns the total magnitude of all the segments
 float Arm::get_max_length() {
     float ret = 0;
-    for(int i=0; i<segments.size(); i++) {
+    for(unsigned int i=0; i<segments.size(); i++) {
         ret += segments[i]->get_mag();
     }
     return ret;
@@ -119,6 +119,10 @@ void Arm::solve(Point3f goal_point, int life_count) {
 
         // compute current_point after making changes
         current_point = calculate_end_effector();
+
+        //cout << "current_point: " << vectorString(current_point) << endl;
+        //cout << "goal_point: " << vectorString(goal_point) << endl;
+
         prev_err = curr_err;
         curr_err = (goal_point - current_point).norm();
 
@@ -272,7 +276,7 @@ void Arm::draw() {
     // wireframe mode
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     // to go back to normal mode
-    //glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     glShadeModel(GL_SMOOTH);
     //glShadeModel(GL_FLAT);
 

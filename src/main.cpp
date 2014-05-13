@@ -22,7 +22,7 @@ void display() {
     Point3f goal(cos(angle*PI/180.0f), sin(angle*PI/180.0f), (sin(zangle*PI/180.0f)));
     //Point3f goal(cos(angle*PI/180.0f), sin(angle*PI/180.0f), 0);
     goal.normalize();
-    goal *= 6;
+    goal *= 8;
 
     goal += Vector3f(-2,0,-1);
     //goal = Vector3f(0, 0, 7);
@@ -78,11 +78,7 @@ void handleInput(unsigned char key, int x, int y)
     case 27:    // ESCAPE KEY
         exit(0);
         break;
-    // spacebar closes window
     case ' ':
-        exit(0);
-        break;
-    case '-':
         display();
         break;
     }
@@ -163,10 +159,16 @@ void handleSpecialKeyReleased(int key, int x, int y) {
 }
 
 int main(int argc, char* argv[]) {
+	std::cout.rdbuf(0);
+
     vector<Segment*> segs;
-    Segment *new_seg = new Segment(2, BALLJOINT);
+    Segment *new_seg = new Segment(1, BALLJOINT);
     segs.push_back(new_seg);
-    new_seg = new Segment(3, BALLJOINT);
+    new_seg = new Segment(1, BALLJOINT);
+	segs.push_back(new_seg);
+    new_seg = new Segment(1, BALLJOINT);
+    segs.push_back(new_seg);
+	new_seg = new Segment(4, BALLJOINT);
     segs.push_back(new_seg);
     /*
     new_seg = new Segment(1, BALLJOINT);

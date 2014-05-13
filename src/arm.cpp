@@ -295,6 +295,8 @@ void Arm::draw() {
     n2 = Vector3f(0, 0, 1);
     n3 = Vector3f(0, 0, 1);
 
+    // draw a platform at z=0;
+    /*
     glBegin(GL_QUADS);
         glNormal3f(n0[0], n0[1], n0[2]);
         glVertex3f(a0[0], a0[1], a0[2]);
@@ -308,6 +310,7 @@ void Arm::draw() {
         glNormal3f(n3[0], n3[1], n3[2]);
         glVertex3f(a3[0], a3[1], a3[2]);
     glEnd();
+    */
 
     int seg_size = segments.size();
     Point3f start_point = base;

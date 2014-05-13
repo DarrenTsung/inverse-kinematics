@@ -8,27 +8,16 @@ using namespace std;
 
 Arm mainArm;
 
+Point3f goal;
+
 float angle = 0.0;
 float zangle = 0.0;
-GLdouble eyeX=0.0;
+GLdouble eyeX=-2.0;
 GLdouble eyeY=-15;
-GLdouble eyeZ=4.0;
+GLdouble eyeZ=2.0;
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);				// clear the color buffer
-
-    angle += 360.0/60.0;
-    zangle += 360.0f/100.0f;
-
-    Point3f goal(cos(angle*PI/180.0f), sin(angle*PI/180.0f), (sin(zangle*PI/180.0f)));
-    //Point3f goal(cos(angle*PI/180.0f), sin(angle*PI/180.0f), 0);
-
-    goal.normalize();
-    goal *= 5;
-
-    goal += Vector3f(-3,0,-1);
-    //goal = Vector3f(0, 0, 7);
-    mainArm.solve(goal, 100);
 
     // set camera parameters
 	GLdouble centerX=eyeX;
@@ -69,6 +58,23 @@ void display() {
     glutSwapBuffers();					// swap buffers (we earlier set double buffer)
 }
 
+void update() {
+    angle += 360.0/60.0;
+    zangle += 360.0f/100.0f;
+
+    goal = Point3f(cos(angle*PI/180.0f), sin(angle*PI/180.0f), (sin(zangle*PI/180.0f)));
+    //Point3f goal(cos(angle*PI/180.0f), sin(angle*PI/180.0f), 0);
+
+    goal.normalize();
+    goal *= 5;
+
+    goal += Vector3f(-3,0,-1);
+    //goal = Vector3f(0, 0, 7);
+    mainArm.solve(goal, 100);
+
+    display();
+}
+
 void reshape(int w, int h) {
 
 }
@@ -81,7 +87,7 @@ void handleInput(unsigned char key, int x, int y)
         exit(0);
         break;
     case ' ':
-        display();
+        update();
         break;
     }
 }
@@ -106,8 +112,6 @@ void handleSpecialKeypress(int key, int x, int y) {
                 // translate it
                 eyeX -= 0.1;
             } else {
-                // rotate it around the normal
-                //mainBez.transform(ROTATION, mainBez.get_normal(), 8);
             }
             break;
 
@@ -118,7 +122,6 @@ void handleSpecialKeypress(int key, int x, int y) {
                 // translate it
                 eyeX += 0.1;
             } else {
-                // rotate it around the normal
             }
             break;
 
@@ -127,10 +130,9 @@ void handleSpecialKeypress(int key, int x, int y) {
             // handle up key
             if (mod == GLUT_ACTIVE_SHIFT) {
                 // translate it
-                eyeZ += 0.1;
-            } else {
-                // rotate it around the right vector
                 eyeY += 0.1;
+            } else {
+                eyeZ += 0.1;
             }
             break;
 
@@ -139,10 +141,9 @@ void handleSpecialKeypress(int key, int x, int y) {
             // handle down key
             if (mod == GLUT_ACTIVE_SHIFT) {
                 // translate it
-                eyeZ -= 0.1;
-            } else {
-                // rotate it around the right vector
                 eyeY -= 0.1;
+            } else {
+                eyeZ -= 0.1;
             }
             break;
     }
@@ -214,6 +215,7 @@ int main(int argc, char* argv[]) {
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, specular0);
 
+    update();
 
     glutMainLoop();
 

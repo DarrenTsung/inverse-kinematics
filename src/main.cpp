@@ -7,6 +7,7 @@
 using namespace std;
 
 Arm mainArm;
+Arm secArm;
 
 Point3f goal;
 
@@ -40,12 +41,24 @@ void display() {
 
     // drawing is done here
     mainArm.draw();
+    secArm.draw();
 
     float c = 0.2;
     Point3f a0 = goal + Vector3f(-c, 0, c);
     Point3f a1 = goal + Vector3f(0, 0, -c);
     Point3f a2 = goal + Vector3f(c, 0, c);
     Vector3f n2(0, -1, 0);
+    glBegin(GL_TRIANGLES);
+        glNormal3f(n2[0], n2[1], n2[2]);
+        glVertex3f(a0[0], a0[1], a0[2]);
+        glVertex3f(a1[0], a1[1], a1[2]);
+        glVertex3f(a2[0], a2[1], a2[2]);
+    glEnd();
+
+    Point3f secGoal = Point3f(goal[0], goal[1], -goal[2]);
+    a0 = secGoal + Vector3f(-c, 0, c);
+    a1 = secGoal + Vector3f(0, 0, -c);
+    a2 = secGoal + Vector3f(c, 0, c);
     glBegin(GL_TRIANGLES);
         glNormal3f(n2[0], n2[1], n2[2]);
         glVertex3f(a0[0], a0[1], a0[2]);
@@ -71,6 +84,8 @@ void update() {
     goal += Vector3f(-3,0,-1);
     //goal = Vector3f(0, 0, 7);
     mainArm.solve(goal, 100);
+    Point3f secGoal = Point3f(goal[0], goal[1], -goal[2]);
+    secArm.solve(secGoal, 100);
 
     display();
 }
@@ -178,7 +193,22 @@ int main(int argc, char* argv[]) {
     new_seg = new Segment(1, BALLJOINT);
     segs.push_back(new_seg);
 
+    vector<Segment*> segs2;
+    Segment *new_seg2 = new Segment(1, BALLJOINT);
+    segs2.push_back(new_seg2);
+    new_seg2 = new Segment(1, BALLJOINT);
+	segs2.push_back(new_seg2);
+    new_seg2 = new Segment(1, BALLJOINT);
+    segs2.push_back(new_seg2);
+    new_seg2 = new Segment(3.5, BALLJOINT);
+    segs2.push_back(new_seg2);
+    new_seg2 = new Segment(2.5, BALLJOINT);
+    segs2.push_back(new_seg2);
+    new_seg2 = new Segment(1, BALLJOINT);
+    segs2.push_back(new_seg2);
+
     mainArm.set_segments(segs);
+    secArm.set_segments(segs2);
 
     //This initializes glut
     glutInit(&argc, argv);

@@ -274,7 +274,7 @@ Point3f Arm::calculate_end_effector(int segment_num /* = -1 */) {
 
 void Arm::draw() {
     // wireframe mode
-    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     // to go back to normal mode
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     glShadeModel(GL_SMOOTH);
